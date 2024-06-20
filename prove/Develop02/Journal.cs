@@ -4,26 +4,46 @@ public class Journal{
     
     public List<Entry> _entries;
 
-    public void AddEntry(Entry newEntry){
+    public Journal()
+    {
+        _entries = new List<Entry>();
+    }
 
+    public void AddEntry(Entry newEntry){
+        _entries.Add(newEntry);
     }
     public void DisplayAll(){
-
+        foreach (var entry in _entries){
+            entry.Display();
+        }
     }
     public void SaveToFile(string file){
-        Console.WriteLine("Enter file name: ");
-        file = Console.ReadLine();
-
         using (StreamWriter outputFile = new StreamWriter(file)){
-            // You can add text to the file with the WriteLine method
-            outputFile.WriteLine("This will be the first line in the file.");
-            // You can use the $ and include variables just like with Console.WriteLine
-            string color = "Blue";
-            outputFile.WriteLine($"My favorite color is {color}");
-    }
+            foreach (var entry in _entries){
+                outputFile.WriteLine($"{entry._date} > Prompt: {entry._promptText}");
+                outputFile.WriteLine($"Response: {entry._entry}");
+                outputFile.WriteLine();
+            }
+        }
     }
     public void LoadFromFile(string file){
-
+         _entries.Clear();    
+        using (StreamReader inputFile = new StreamReader(file)){
+            string line;
+            string currentPrompt = "";
+            string currentResponse = "";
+            string currentDate = "";
+            while ((line = inputFile.ReadLine()) != null){
+                if (line.EndsWith(" >"))    {
+                    currentDate = line.Substring(0, line.IndexOf(" >"));
+                    currentPrompt = line.Substring(line.IndexOf("> ") + 2);
+                }
+                else if (line.StartsWith("Response: ")){
+                    currentResponse = line.Substring("Response: ".Length);
+                     _entries.Add(new Entry(currentPrompt, currentResponse, currentDate));
+                }
+            }
+        }
     }
 
 }

@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 class Program
 {
     static void Main(string[] args)
     {
         Journal theJournal = new Journal ();
-        Entry anEntry = new Entry();
         PromptGenerator prompt = new PromptGenerator();
-        Console.WriteLine(prompt.GetRandomPrompt());
+
         //Console.WriteLine("Hello Develop02 World!");
         int num = 0;
 
@@ -23,16 +24,24 @@ class Program
             num = int.Parse(choice);
 
             if(num == 1){
-                Console.WriteLine(prompt.GetRandomPrompt());
+                string randomPrompt = prompt.GetRandomPrompt();
+                Console.WriteLine($"Prompt: {randomPrompt}");
+                Console.Write("Your response: ");
+                string response = Console.ReadLine();
+                theJournal.AddEntry(new Entry(randomPrompt, response));
             }
             else if(num == 2){
-
+                theJournal.DisplayAll();
             }
             else if(num == 3){
-
+                Console.Write("Enter file name to load: ");
+                string loadFileName = Console.ReadLine();
+                theJournal.LoadFromFile(loadFileName);
             }
             else if(num == 4){
-
+                Console.Write("Enter file name to save: ");
+                string saveFileName = Console.ReadLine();
+                theJournal.SaveToFile(saveFileName);
             }
 
         }
