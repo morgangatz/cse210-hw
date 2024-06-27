@@ -1,12 +1,13 @@
 using System;
+//Added new class that stores scriptures to pick one at random to memorize
+
 
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Develop03 World!");
-        Reference reference = new Reference("Proverbs", 3, 5, 6);
-        Scripture scripture = new Scripture(reference, "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.");
+        //Console.WriteLine("Hello Develop03 World!");
+        Scripture scripture = ScriptureLibrary.GetRandomScripture();  
 
         while (true)
         {
@@ -28,7 +29,5 @@ class Program
                 break;
             }
         }
-
-
     }
 }
